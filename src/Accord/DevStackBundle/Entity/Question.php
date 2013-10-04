@@ -314,4 +314,8 @@ class Question
 		}
 		return $bestSolution;
 	}
+	
+	public function __toString(){
+		return $this->getTitle();
+	}
 }

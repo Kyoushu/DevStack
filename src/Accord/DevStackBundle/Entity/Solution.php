@@ -39,12 +39,12 @@ class Solution
 	private $question;
 	
 	/**
-     * @ORM\OneToMany(targetEntity="SolutionComment", mappedBy="solutionId")
+     * @ORM\OneToMany(targetEntity="SolutionComment", mappedBy="solution")
      */
 	private $comments;
 	
 	/**
-     * @ORM\OneToMany(targetEntity="SolutionVote", mappedBy="solutionId")
+     * @ORM\OneToMany(targetEntity="SolutionVote", mappedBy="solution")
      */
 	private $votes;
 
@@ -281,5 +281,18 @@ class Solution
 			$score += $vote->getWeight();
 		}
 		return $score;
+	}
+	
+	public function getTitle(){
+		$user = $this->getUser();
+		return sprintf(
+			'%s: solution proposed by %s',
+			$this->getQuestion()->getTitle(),
+			($user ? $user->getUsername() : 'Anon')
+		);
+	}
+	
+	public function __toString(){
+		return $this->getTitle();
 	}
 }

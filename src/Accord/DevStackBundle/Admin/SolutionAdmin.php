@@ -14,7 +14,7 @@ class SolutionAdmin extends Admin
 		$formMapper
 			->add('question', 'entity', array('class' => 'Accord\DevStackBundle\Entity\Question'))
 			->add('user', 'entity', array('class' => 'Accord\DevStackBundle\Entity\User'))
-			->add('solutionMarkdown', 'text', array('label' => 'Solution'))
+			->add('solutionMarkdown', 'textarea', array('label' => 'Solution'))
 		;
     }
 
@@ -23,15 +23,19 @@ class SolutionAdmin extends Admin
 		$datagridMapper
 			->add('question')
 			->add('user')
+			->add('created')
+			->add('updated')
 		;
     }
 
 	// Fields to be shown on lists
 	protected function configureListFields(ListMapper $listMapper){
 		$listMapper
-			->addIdentifier('id')
-			->add('question')
+			->addIdentifier('title')
 			->add('user')
+			->add('score')
+			->add('created')
+			->add('updated')
 		;
 	}
 }

@@ -20,3 +20,25 @@ services:
             - ~
         calls:
             - [ setTranslationDomain, [AccordDevStackBundle]]
+            
+    sonata.admin.solution_vote:
+        class: Accord\DevStackBundle\Admin\SolutionVoteAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Content", label: "Solution Vote" }
+        arguments:
+            - ~
+            - Accord\DevStackBundle\Entity\SolutionVote
+            - ~
+        calls:
+            - [ setTranslationDomain, [AccordDevStackBundle]]
+            
+    sonata.admin.tag:
+        class: Accord\DevStackBundle\Admin\TagAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Content", label: "Tag" }
+        arguments:
+            - ~
+            - Accord\DevStackBundle\Entity\Tag
+            - ~
+        calls:
+            - [ setTranslationDomain, [AccordDevStackBundle]]
