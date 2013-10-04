@@ -1,0 +1,22 @@
+services:
+    sonata.admin.question:
+        class: Accord\DevStackBundle\Admin\QuestionAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Content", label: "Question" }
+        arguments:
+            - ~
+            - Accord\DevStackBundle\Entity\Question
+            - ~
+        calls:
+            - [ setTranslationDomain, [AccordDevStackBundle]]
+            
+    sonata.admin.solution:
+        class: Accord\DevStackBundle\Admin\SolutionAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Content", label: "Solution" }
+        arguments:
+            - ~
+            - Accord\DevStackBundle\Entity\Solution
+            - ~
+        calls:
+            - [ setTranslationDomain, [AccordDevStackBundle]]

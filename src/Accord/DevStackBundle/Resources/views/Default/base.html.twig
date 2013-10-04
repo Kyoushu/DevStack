@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>{% block meta_title %}DevStack{% endblock %}</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		
+		{% block stylesheets %}
+			{% stylesheets
+				'../components/bootstrap/css/bootstrap.css'
+				'@AccordDevStackBundle/Resources/css/style.css'
+				filter='cssrewrite'
+			%}
+				<link href="{{ asset_url }}" rel="stylesheet" media="screen">
+			{% endstylesheets %}
+		{% endblock %}
+	</head>
+	<body>
+		
+		{% include 'AccordDevStackBundle:Default:nav.html.twig' %}
+		
+		{% block contents %}
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-12">
+						<h1>Title</h1>
+						<p>Body</p>
+					</div>
+				</div>
+			</div>
+		{% endblock %}
+		
+		{% block javascripts %}
+			{% javascripts
+				'../components/jquery/jquery.js'
+				'../components/bootstrap/js/bootstrap.js'
+			%}
+				<script src="{{ asset_url }}"></script>
+			{% endjavascripts %}
+		{% endblock %}
+		
+	</body>
+</html>

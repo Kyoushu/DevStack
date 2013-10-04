@@ -1,0 +1,12 @@
+#!/usr/bin/php
+<?php
+
+echo "Updating permissions...\n";
+
+$cmd = sprintf('sudo chmod ugo+rw -R %s/app/cache', __DIR__);
+passthru($cmd);
+
+$cmd = sprintf('sudo chmod ugo+rw -R %s/app/logs', __DIR__);
+passthru($cmd);
+
+echo "Done\n";

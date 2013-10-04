@@ -1,0 +1,7 @@
+parameters:
+#    accord_dev_stack.example.class: Accord\DevStackBundle\Example
+
+services:
+#    accord_dev_stack.example:
+#        class: %accord_dev_stack.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]
