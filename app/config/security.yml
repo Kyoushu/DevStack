@@ -28,4 +28,6 @@ security:
         - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/admin/, role: ROLE_ADMIN }
-        - { path: ^/solution\-vote/, role: ROLE_USER }
+        - { path: ^/solution\-(comment|vote|post)/, role: ROLE_USER }
+        - { path: '^/solution/[0-9]+/(edit|delete)/', role: ROLE_USER }
+        

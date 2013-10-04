@@ -5,12 +5,20 @@
 {% block contents %}
 
 	<div class="container">
-		<h1>{{ question.title }}</h1>
+		<h2>{{ question.title }}</h2>
 		
 		<hr />
 		
 		<div class="question row">
 			<div class="col-md-12">
+				
+				<div class="btn-group btn-group-xs pull-right">
+					{% if app.user and app.user.id == question.user.id %}
+						<a href="{{ path('ds_question_edit', {slug: question.slug}) }}" class="btn btn-default">Edit</a>
+						<a href="{{ path('ds_question_delete', {slug: question.slug}) }}" class="btn btn-default">Delete</a>
+					{% endif %}
+				</div>
+				
 				{{ question.questionMarkdown|markdown }}
 			</div>
 		</div>
@@ -19,13 +27,19 @@
 		
 		<div class="tags row">
 			<div class="col-md-12">
-				<p>Last updated {{ question.updated|date('l jS F Y, H:i') }}</p>
+				<a href="{{ path('ds_user', {username: question.user.username}) }}">{{ question.user.username }}</a>
+				<span class="datetime-updated">{{ question.updated|date('l jS F Y, H:i') }}</span>
 			</div>
 		</div>
 		
+		{% if question.solutions|length > 0 %}
+			<hr />
+			{% include 'AccordDevStackBundle:Solution:list.html.twig' with {list: question.solutions, commentForm: commentForm} %}
+		{% endif %}
+		
 		<hr />
 		
-		{% include 'AccordDevStackBundle:Solution:list.html.twig' with {list: question.solutions} %}
+		{{ form(solutionForm) }}
 		
 	</div>
 

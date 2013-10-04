@@ -8,10 +8,55 @@ ds_question:
     defaults:
         _controller: AccordDevStackBundle:Default:question
         
+ds_question_edit:
+    pattern: /question/{slug}/edit
+    defaults:
+        _controller: AccordDevStackBundle:Default:questionEdit
+        
+ds_question_delete:
+    pattern: /question/{slug}/delete/{confirm}
+    defaults:
+        _controller: AccordDevStackBundle:Default:questionDelete
+        confirm: ~
+        
 ds_solution_vote:
     pattern: /solution-vote/{id}/{voteDirection}
     defaults:
         _controller: AccordDevStackBundle:Default:solutionVote
+        
+ds_solution_comment:
+    pattern: /solution-comment/{id}
+    methods: [POST]
+    defaults:
+        _controller: AccordDevStackBundle:Default:solutionComment
+        
+ds_solution_comment_delete:
+    pattern: /solution-comment/{id}/delete/{confirm}
+    defaults:
+        _controller: AccordDevStackBundle:Default:solutionCommentDelete
+        confirm: ~
+        
+ds_solution_comment_edit:
+    pattern: /solution-comment/{id}/edit
+    defaults:
+        _controller: AccordDevStackBundle:Default:solutionCommentEdit
+        
+ds_solution_delete:
+    pattern: /solution/{id}/delete/{confirm}
+    defaults:
+        _controller: AccordDevStackBundle:Default:solutionDelete
+        confirm: ~
+        
+ds_solution_edit:
+    pattern: /solution/{id}/edit
+    defaults:
+        _controller: AccordDevStackBundle:Default:solutionEdit
+        
+ds_solution_post:
+    pattern: /solution-post/{slug}
+    methods: [POST]
+    defaults:
+        _controller: AccordDevStackBundle:Default:solutionPost
         
 ds_user:
     pattern: /user/{username}

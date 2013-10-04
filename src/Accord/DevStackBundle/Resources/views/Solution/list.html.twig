@@ -5,7 +5,7 @@
 			<hr />
 		{% endif %}
 		
-		<div class="row solution-container">
+		<div class="row solution-container" id="solution_{{ solution.id }}">
 			<div class="col-md-1">
 				<div class="vote-container text-center">
 					<a href="{{ path('ds_solution_vote', {id: solution.id, voteDirection: 1}) }}">
@@ -18,12 +18,27 @@
 				</div>
 			</div>
 			<div class="col-md-11">
+				
+				<div class="btn-group btn-group-xs pull-right">
+					{% if app.user and app.user.id == solution.user.id %}
+						<a href="{{ path('ds_solution_edit', {id: solution.id}) }}" class="btn btn-default">Edit</a>
+						<a href="{{ path('ds_solution_delete', {id: solution.id}) }}" class="btn btn-default">Delete</a>
+					{% endif %}
+				</div>
+				
 				{{ solution.solutionMarkdown|markdown }}
 				<p>
 					<a href="{{ path('ds_user', {username: solution.user.username}) }}">{{ solution.user.username }}</a>
-					<span class="datetime-created">{{ solution.created|date('l jS F Y, H:i')}}</span>
+					<span class="datetime-updated">{{ solution.updated|date('l jS F Y, H:i')}}</span>
 				</p>
 				<hr />
+				
+				{% include 'AccordDevStackBundle:SolutionComment:list.html.twig' with {list: solution.comments} %}
+				
+				<form role="form" action="{{ path('ds_solution_comment', {id: solution.id}) }}" method="POST">
+					{{ form_widget(commentForm) }}
+				</form>
+				
 			</div>
 		</div>
 	{% endfor %}

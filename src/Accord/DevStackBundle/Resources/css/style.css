@@ -19,3 +19,14 @@ body{
 .row + .row{
 	margin-top: 10px;
 }
+
+.solution-comment-list{
+	font-size: 0.8em;
+	padding-left: 20px;
+}
+
+.solution-container hr{
+	margin-top: 10px;
+	margin-bottom: 10px;
+	
+}

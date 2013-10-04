@@ -11,7 +11,7 @@
 					<h3>{{ question.title }}</h3>
 				</a>
 				<p>Asked by <a href="{{ path('ds_user', {username: question.user.username}) }}">{{ question.user.username }}</a></p>
-				<p>{{ question.created|date('l jS F Y, H:i') }}</p>
+				<p class="datetime-updated">{{ question.updated|date('l jS F Y, H:i') }}</p>
 				<div class="tags">
 					{% for tag in question.tags %}
 						<a href="{{ path('ds_tag', {slug: tag.slug}) }}" class="label label-default">{{ tag.title }}</a>

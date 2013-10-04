@@ -1,0 +1,27 @@
+<div class="solution-comment-list">
+	{% for comment in list %}
+		
+		{% if loop.index > 1 %}
+			<hr />
+		{% endif %}
+		
+		<div class="row solution-comment-container" id="solution_comment_{{ comment.id }}">
+			<div class="col-md-12">
+				
+				<div class="btn-group btn-group-xs pull-right">
+					{% if app.user and app.user.id == comment.user.id %}
+						<a href="{{ path('ds_solution_comment_edit', {id: comment.id}) }}" class="btn btn-default">Edit</a>
+						<a href="{{ path('ds_solution_comment_delete', {id: comment.id}) }}" class="btn btn-default">Delete</a>
+					{% endif %}
+				</div>
+				
+				{{ comment.commentMarkdown|markdown }}
+				
+				<p>
+					<a href="{{ path('ds_user', {username: comment.user.username}) }}">{{ comment.user.username }}</a>
+					<span class="datetime-updated">{{ comment.updated|date('l jS F Y, H:i')}}</span>
+				</p>
+			</div>				
+		</div>
+	{% endfor %}
+</div>

@@ -39,12 +39,12 @@ class Solution
 	private $question;
 	
 	/**
-     * @ORM\OneToMany(targetEntity="SolutionComment", mappedBy="solution")
+     * @ORM\OneToMany(targetEntity="SolutionComment", mappedBy="solution", cascade={"remove"})
      */
 	private $comments;
 	
 	/**
-     * @ORM\OneToMany(targetEntity="SolutionVote", mappedBy="solution")
+     * @ORM\OneToMany(targetEntity="SolutionVote", mappedBy="solution", cascade={"remove"})
      */
 	private $votes;
 
