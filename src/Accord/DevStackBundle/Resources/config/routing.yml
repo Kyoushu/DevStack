@@ -1,3 +1,24 @@
 ds_homepage:
-    pattern:  /
-    defaults: { _controller: AccordDevStackBundle:Default:index }
+    pattern: /
+    defaults:
+        _controller: AccordDevStackBundle:Default:index
+    
+ds_question:
+    pattern: /question/{slug}
+    defaults:
+        _controller: AccordDevStackBundle:Default:question
+        
+ds_solution_vote:
+    pattern: /solution-vote/{id}/{voteDirection}
+    defaults:
+        _controller: AccordDevStackBundle:Default:solutionVote
+        
+ds_user:
+    pattern: /user/{username}
+    defaults:
+        _controller: AccordDevStackBundle:Default:user
+        
+ds_tag:
+    pattern: /tag/{slug}
+    defaults:
+        _controller: AccordDevStackBundle:Default:tag

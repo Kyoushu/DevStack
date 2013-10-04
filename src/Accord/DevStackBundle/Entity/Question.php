@@ -31,7 +31,7 @@ class Question
 	private $user;
 	
 	/**
-     * @ORM\OneToMany(targetEntity="Solution", mappedBy="questionId")
+     * @ORM\OneToMany(targetEntity="Solution", mappedBy="question")
      */
 	private $solutions;
 
@@ -301,6 +301,18 @@ class Question
         return $this->solutions;
     }
 	
+	public function getTotalVotes(){
+		$votes = 0;
+		foreach($this->getSolutions() as $solution){
+			$votes += $solution->getVotes()->count();
+		}
+		return $votes;
+	}
+	
+	public function getTotalSolutions(){
+		return $this->getSolutions()->count();
+	}
+	
 	public function getBestSolution(){
 		$bestSolution = null;
 		foreach($this->getSolutions() as $solution){
@@ -318,4 +330,5 @@ class Question
 	public function __toString(){
 		return $this->getTitle();
 	}
+	
 }

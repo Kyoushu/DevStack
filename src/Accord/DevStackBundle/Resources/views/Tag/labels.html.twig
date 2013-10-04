@@ -1,0 +1,7 @@
+<div class="tags row">
+	<div class="col-md-12">
+		{% for tag in labels %}
+			<a href="{{ path('ds_tag', {slug: tag.slug}) }}" class="label label-default">{{ tag.title }}</a>
+		{% endfor %}
+	</div>
+</div>

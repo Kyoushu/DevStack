@@ -19,6 +19,7 @@ class AppKernel extends Kernel
 			new FOS\UserBundle\FOSUserBundle(),
             new Accord\DevStackBundle\AccordDevStackBundle(),
 			new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
+			new Knp\Bundle\MarkdownBundle\KnpMarkdownBundle(),
 			
 			// Sonata
 			new Sonata\DoctrineORMAdminBundle\SonataDoctrineORMAdminBundle(),

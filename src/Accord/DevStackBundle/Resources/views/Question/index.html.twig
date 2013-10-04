@@ -1,0 +1,32 @@
+{% extends 'AccordDevStackBundle:Default:base.html.twig' %}
+
+{% block meta_title %}DevStack - {{ question.title }}{% endblock %}
+
+{% block contents %}
+
+	<div class="container">
+		<h1>{{ question.title }}</h1>
+		
+		<hr />
+		
+		<div class="question row">
+			<div class="col-md-12">
+				{{ question.questionMarkdown|markdown }}
+			</div>
+		</div>
+		
+		{% include 'AccordDevStackBundle:Tag:labels.html.twig' with {labels: question.tags} %}
+		
+		<div class="tags row">
+			<div class="col-md-12">
+				<p>Last updated {{ question.updated|date('l jS F Y, H:i') }}</p>
+			</div>
+		</div>
+		
+		<hr />
+		
+		{% include 'AccordDevStackBundle:Solution:list.html.twig' with {list: question.solutions} %}
+		
+	</div>
+
+{% endblock %}

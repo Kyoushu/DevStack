@@ -1,0 +1,31 @@
+<div class="question-list">
+	{% for question in list %}
+		
+		{% if loop.index > 1 %}
+			<hr />
+		{% endif %}
+		
+		<div class="row question-container">
+			<div class="col-md-10">
+				<a href="{{ path('ds_question', {slug: question.slug}) }}">
+					<h3>{{ question.title }}</h3>
+				</a>
+				<p>Asked by <a href="{{ path('ds_user', {username: question.user.username}) }}">{{ question.user.username }}</a></p>
+				<p>{{ question.created|date('l jS F Y, H:i') }}</p>
+				<div class="tags">
+					{% for tag in question.tags %}
+						<a href="{{ path('ds_tag', {slug: tag.slug}) }}" class="label label-default">{{ tag.title }}</a>
+					{% endfor %}
+				</div>
+			</div>
+			<div class="col-md-1 text-center">
+				<div class="count">{{ question.totalVotes }}</div>
+				Votes
+			</div>
+			<div class="col-md-1 text-center">
+				<div class="count">{{ question.totalSolutions }}</div>
+				Solutions
+			</div>
+		</div>
+	{% endfor %}
+</div>

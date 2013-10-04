@@ -1,0 +1,14 @@
+{% extends 'AccordDevStackBundle:Default:base.html.twig' %}
+
+{% block meta_title %}DevStack - Latest{% endblock %}
+
+{% block contents %}
+
+	<div class="container">
+		<h1>Latest</h1>
+		
+		{% include 'AccordDevStackBundle:Question:list.html.twig' with {list: questions} %}
+		
+	</div>
+
+{% endblock %}

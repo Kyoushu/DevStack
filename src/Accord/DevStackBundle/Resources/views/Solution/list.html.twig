@@ -1,0 +1,30 @@
+<div class="solution-list">
+	{% for solution in list %}
+		
+		{% if loop.index > 1 %}
+			<hr />
+		{% endif %}
+		
+		<div class="row solution-container">
+			<div class="col-md-1">
+				<div class="vote-container text-center">
+					<a href="{{ path('ds_solution_vote', {id: solution.id, voteDirection: 1}) }}">
+						<span class="glyphicon glyphicon-chevron-up"></span>
+					</a>
+					<div class="score">{{ solution.score }}</div>
+					<a href="{{ path('ds_solution_vote', {id: solution.id, voteDirection: -1}) }}">
+						<span class="glyphicon glyphicon-chevron-down"></span>
+					</a>
+				</div>
+			</div>
+			<div class="col-md-11">
+				{{ solution.solutionMarkdown|markdown }}
+				<p>
+					<a href="{{ path('ds_user', {username: solution.user.username}) }}">{{ solution.user.username }}</a>
+					<span class="datetime-created">{{ solution.created|date('l jS F Y, H:i')}}</span>
+				</p>
+				<hr />
+			</div>
+		</div>
+	{% endfor %}
+</div>

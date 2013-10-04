@@ -3,6 +3,7 @@
 namespace Accord\DevStackBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Tag
@@ -27,7 +28,14 @@ class Tag
      * @ORM\Column(name="title", type="string", length=50)
      */
     private $title;
-
+	
+	/**
+     * @var string
+     *
+     * @ORM\Column(name="slug", type="string", length=255, unique=true)
+	 * @Gedmo\Slug(fields={"title"})
+     */
+    private $slug;
 
     /**
      * Get id
@@ -65,4 +73,27 @@ class Tag
 	public function __toString(){
 		return $this->getTitle();
 	}
+	
+	/**
+     * Set slug
+     *
+     * @param string $slug
+     * @return Question
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+    
+        return $this;
+    }
+
+    /**
+     * Get slug
+     *
+     * @return string 
+     */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
 }
