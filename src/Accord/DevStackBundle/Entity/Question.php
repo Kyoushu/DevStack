@@ -83,6 +83,7 @@ class Question{
 	 *		joinColumns={@ORM\JoinColumn(name="questionId", referencedColumnName="id")},
 	 *		inverseJoinColumns={@ORM\JoinColumn(name="tagId", referencedColumnName="id")}
 	 *		)
+	 * @Assert\Count(min=1, minMessage="Please select at least one tag")
 	 */
 	private $tags;
 	

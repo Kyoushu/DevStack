@@ -31,4 +31,5 @@ security:
         - { path: ^/solution\-(comment|vote|post)/, role: ROLE_USER }
         - { path: '^/solution/[0-9]+/(edit|delete)/', role: ROLE_USER }
         - { path: '^/question/new$', role: ROLE_USER }
+        - { path: '^/question/.+/edit$', role: ROLE_USER }
         

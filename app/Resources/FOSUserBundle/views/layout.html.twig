@@ -1,0 +1,25 @@
+{% extends 'AccordDevStackBundle:Default:base.html.twig' %}
+
+{% block flashbag %}
+	{% if app.session.flashbag.has('error') or app.session.flashbag.has('notice') %}
+		<div class="container">
+			{% for flashMessage in app.session.flashbag.get('error') %}
+				<div class="alert alert-error">
+					<button type="button" class="close" data-dismiss="alert"></button>
+					<strong>Error</strong> {{ flashMessage|trans({}, 'FOSUserBundle') }}
+				</div>
+			{% endfor %}
+
+			{% for flashMessage in app.session.flashbag.get('notice') %}
+				<div class="alert alert-success">
+					<button type="button" class="close" data-dismiss="alert"></button>
+					<strong>Success</strong> {{ flashMessage|trans({}, 'FOSUserBundle') }}
+				</div>
+			{% endfor %}
+		</div>
+	{% endif %}
+{% endblock %}
+
+{% block contents %}
+	{{ block('fos_user_content') }}
+{% endblock %}

@@ -10,7 +10,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Accord\DevStackBundle\Form\Type\SolutionCommentType;
 use Accord\DevStackBundle\Form\Type\SolutionType;
 use Accord\DevStackBundle\Form\Type\QuestionType;
-use Accord\DevStackBundle\Form\Type\SearchType;
+use Accord\DevStackBundle\Form\Type\QuestionSearchType;
 
 use Accord\DevStackBundle\Entity\SolutionComment;
 use Accord\DevStackBundle\Entity\Solution;
@@ -25,7 +25,7 @@ class DefaultController extends Controller{
 		
 		$questions = $repo->createQueryBuilder('q')
 			->orderBy('q.created', 'DESC')
-			->setMaxResults(20)
+			->setMaxResults(10)
 			->getQuery()
 			->getResult()
 		;
@@ -167,7 +167,7 @@ class DefaultController extends Controller{
 			))
 		));
                 
-                $form->add('cancel', 'submit');
+		$form->add('cancel', 'submit');
 		
 		if($request->isMethod('POST')){
 			
@@ -187,7 +187,11 @@ class DefaultController extends Controller{
 				
 				$this->get('session')->getFlashBag()->add('notice', 'Your question has been updated');
 				
-				return $this->redirect($url);
+				$updatedUrl = $this->generateUrl('ds_question', array(
+					'slug' => $slug
+				));
+				
+				return $this->redirect($updatedUrl);
 			}
 			
 		}
@@ -489,11 +493,15 @@ class DefaultController extends Controller{
 		
 	}
 	
-	public function searchAction(Request $request, $tagSlugs){
+	public function searchAction(Request $request, $tagSlugs, $keywords, $perPage, $page, $orderProperty, $orderSort){
 		
 		$finder = $this->get('devstack.finder_factory')->getQuestionFinder();
 		
-		if($tagSlugs){
+		if($keywords && $keywords !== '-'){
+			$finder->setKeywords($keywords);
+		}
+		
+		if($tagSlugs && $tagSlugs !== '-'){
 			$tags = $this->getDoctrine()->getManager()
 				->getRepository('AccordDevStackBundle:Tag')
 				->findBy(array(
@@ -505,7 +513,10 @@ class DefaultController extends Controller{
 			}
 		}
 		
-		$form = $this->createForm(new SearchType(), $finder, array(
+		$finder->setOrderProperty($orderProperty);
+		$finder->setOrderSort($orderSort);
+		
+		$form = $this->createForm(new QuestionSearchType(), $finder, array(
 			'action' => $this->generateUrl('ds_search')
 		));
 		
@@ -513,6 +524,8 @@ class DefaultController extends Controller{
 			$form->handleRequest($request);
 			return $this->redirect( $finder->getResultUrl() );
 		}
+		
+		$finder->getPager()->setPerPage($perPage)->setPage($page);
 		
 		return $this->render('AccordDevStackBundle:Search:index.html.twig', array(
 			'finder' => $finder,

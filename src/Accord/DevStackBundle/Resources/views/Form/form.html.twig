@@ -308,8 +308,8 @@
 
     <div class="form-group{{ errors|length > 0 ? ' has-error' }}">
         {{ form_label(form) }}
+		{{ form_errors(form) }}
         {{ form_widget(form) }}
-        {{ form_errors(form) }}
     </div>
 
 {% endblock form_row %}

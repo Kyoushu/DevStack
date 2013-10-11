@@ -74,7 +74,14 @@ ds_tag:
         _controller: AccordDevStackBundle:Default:search
         
 ds_search:
-    pattern: /search/{tagSlugs}
+    pattern: /search/{tagSlugs}/{keywords}/{perPage}/{page}/{orderProperty}/{orderSort}
     defaults:
         _controller: AccordDevStackBundle:Default:search
-        tagSlugs: ~
+        tagSlugs: '-'
+        keywords: '-'
+        perPage: 20
+        page: 1
+        orderProperty: created
+        orderSort: desc
+    requirements:
+        tagSlugs: '[a-z\-,]+'

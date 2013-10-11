@@ -1,0 +1,29 @@
+{% spaceless %}
+
+<div class="row">
+	<div class="col-md-12">
+	
+		<ul class="pagination">
+			<li>
+				<a href="{{ pager.iterator|first.url }}">
+					{{ pager.firstItemPosition }} - {{ pager.lastItemPosition }} of {{ pager.total }}
+				</a>
+			</li>
+		</ul>
+		
+		<ul class="pagination pull-right">
+			{% for page in pager %}
+				{% if page.prev %}
+					<li><a href="{{ page.url }}">&laquo;</a></li>
+				{% endif %}
+				<li class="{{ page.current ? 'active' }}"><a href="{{ page.url }}">{{ page.page }}</a></li>
+				{% if page.next %}
+					<li><a href="{{ page.url }}">&raquo;</a></li>
+				{% endif %}
+			{% endfor %}
+		</ul>
+		
+	</div>
+</div>
+
+{% endspaceless %}

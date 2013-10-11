@@ -1,0 +1,11 @@
+#!/usr/bin/php
+<?php
+
+$cmd = sprintf('sudo %s/app/console cache:clear', __DIR__);
+passthru($cmd);
+
+$cmd = sprintf('%s/fix-permissions', __DIR__);
+passthru($cmd);
+
+$cmd = sprintf('%s/app/console assets:install --symlink', __DIR__);
+passthru($cmd);

@@ -5,4 +5,8 @@ services:
         
     devstack.finder_factory:
         class: Accord\DevStackBundle\Finder\Factory
-        arguments: ['@doctrine.orm.entity_manager', '@router']
+        arguments: ['@doctrine.orm.entity_manager', '@router', '@devstack.pager_factory', '@validator']
+        
+    devstack.pager_factory:
+        class: Accord\DevStackBundle\Pager\Factory
+        arguments: ['@router']

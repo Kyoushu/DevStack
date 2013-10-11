@@ -7,14 +7,32 @@
 		<hr />
 		
 		<div class="row">
-			<div class="col-md-12">
+			<div class="col-md-3">
 				{{ form(form) }}
 			</div>
+			<div class="col-md-9 question-search-result-container">
+				
+				{% set total = finder.total %}
+				
+				<h3>
+					{% spaceless %}
+						{% if total == 0 %}
+							No Results
+						{% elseif finder.total == 1 %}
+							1 Result
+						{% else %}
+							{{ total }} Results
+						{% endif %}
+					{% endspaceless %}
+				</h3>
+				
+				{% if total > 0 %}
+					{% include 'AccordDevStackBundle:Pager:pager.html.twig' with {pager: finder.pager} %}
+					{% include 'AccordDevStackBundle:Question:list.html.twig' with {list: finder.result} %}
+					{% include 'AccordDevStackBundle:Pager:pager.html.twig' with {pager: finder.pager} %}
+				{% endif %}
+			</div>
 		</div>
-		
-		<hr />
-		
-		{% include 'AccordDevStackBundle:Question:list.html.twig' with {list: finder.result} %}
 		
 	</div>
 {% endblock %}

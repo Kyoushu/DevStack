@@ -16,6 +16,9 @@
 				<li><a href="{{ path('ds_search') }}">Search</a></li>
 				{% if app.user %}
 					<li><a href="{{ path('ds_question_new') }}">Post a question</a></li>
+					<li><a href="{{ path('fos_user_security_logout') }}">Logout</a></li>
+				{% else %}
+					<li><a href="{{ path('fos_user_security_login') }}">Login</a></li>
 				{% endif %}
 			</ul>
 		</div><!-- /.navbar-collapse -->
