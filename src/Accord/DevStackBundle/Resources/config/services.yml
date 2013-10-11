@@ -1,3 +1,9 @@
+parameters:
+  devstack.oauth.yammer:
+    clientId: LuS8cugzQhekaS0JpQKXA
+    clientSecret: tppom1xvaGERPZoHkCaDYytNENoshyXrHe8EARNY
+    scope: ['email']
+
 services:
     devstack.ballot_box:
         class: Accord\DevStackBundle\Vote\BallotBox
@@ -10,3 +16,7 @@ services:
     devstack.pager_factory:
         class: Accord\DevStackBundle\Pager\Factory
         arguments: ['@router']
+        
+    devstack.oath.yammer:
+        class: Accord\DevStackBundle\OAuth\Yammer
+        arguments: ['@router', '@service_container']

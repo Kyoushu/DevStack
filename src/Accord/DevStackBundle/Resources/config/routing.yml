@@ -85,3 +85,13 @@ ds_search:
         orderSort: desc
     requirements:
         tagSlugs: '[a-z\-,]+'
+        
+ds_login_yammer:
+    pattern: /login/yammer
+    defaults:
+      _controller: AccordDevStackBundle:Yammer:login
+
+ds_login_yammer_return:
+    pattern: /login/yammer/return
+    defaults:
+      _controller: AccordDevStackBundle:Yammer:return
