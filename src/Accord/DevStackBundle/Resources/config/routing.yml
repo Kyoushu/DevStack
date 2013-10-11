@@ -69,12 +69,12 @@ ds_user:
         _controller: AccordDevStackBundle:Default:user
         
 ds_tag:
-    pattern: /tag/{slug}
-    defaults:
-        _controller: AccordDevStackBundle:Default:tag
-        
-ds_search:
-    pattern: /search/{tagTitles}
+    pattern: /tag/{tagSlugs}
     defaults:
         _controller: AccordDevStackBundle:Default:search
-        tagTitles: ~
+        
+ds_search:
+    pattern: /search/{tagSlugs}
+    defaults:
+        _controller: AccordDevStackBundle:Default:search
+        tagSlugs: ~

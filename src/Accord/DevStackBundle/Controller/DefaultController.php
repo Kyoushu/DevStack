@@ -489,15 +489,15 @@ class DefaultController extends Controller{
 		
 	}
 	
-	public function searchAction(Request $request, $tagTitles){
+	public function searchAction(Request $request, $tagSlugs){
 		
 		$finder = $this->get('devstack.finder_factory')->getQuestionFinder();
 		
-		if($tagTitles){
+		if($tagSlugs){
 			$tags = $this->getDoctrine()->getManager()
 				->getRepository('AccordDevStackBundle:Tag')
 				->findBy(array(
-					'title' => explode(',', $tagTitles)
+					'slug' => explode(',', $tagSlugs)
 				))
 			;
 			foreach($tags as $tag){

@@ -67,13 +67,13 @@ class QuestionFinder{
 	
 	public function getResultUrl(){
 		
-		$tagTitles = array();
+		$tagSlugs = array();
 		foreach($this->tags as $tag){
-			$tagTitles[] = $tag->getTitle();
+			$tagSlugs[] = $tag->getSlug();
 		}
 		
 		return $this->getRouter()->generate('ds_search', array(
-			'tagTitles' => implode(',', $tagTitles)
+			'tagSlugs' => implode(',', $tagSlugs)
 		));
 		
 	}

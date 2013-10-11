@@ -12,11 +12,7 @@
 				</a>
 				<p>Asked by <a href="{{ path('ds_user', {username: question.user.username}) }}">{{ question.user.username }}</a></p>
 				<p class="datetime-updated">{{ question.updated|date('l jS F Y, H:i') }}</p>
-				<div class="tags">
-					{% for tag in question.tags %}
-						<a href="{{ path('ds_tag', {slug: tag.slug}) }}" class="label label-default">{{ tag.title }}</a>
-					{% endfor %}
-				</div>
+				{% include 'AccordDevStackBundle:Tag:labels.html.twig' with {labels: question.tags} %}
 			</div>
 			<div class="col-md-1 text-center">
 				<div class="count">{{ question.totalVotes }}</div>
