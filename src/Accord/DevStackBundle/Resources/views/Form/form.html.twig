@@ -32,9 +32,16 @@
 {% block collection_widget %}
 
     {% if prototype is defined %}
-        {% set attr = attr|merge({'data-prototype': form_row(prototype) }) %}
+        {% set attr = attr|merge({
+            'data-prototype': form_row(prototype),
+            'data-allow-add': (allow_add ? 1 : 0),
+            'data-allow-delete': (allow_delete ? 1 : 0)
+        }) %}
     {% endif %}
-    {{ block('form_widget') }}
+    
+    
+        {{ block('form_widget') }}
+    
 
 {% endblock collection_widget %}
 
@@ -56,12 +63,23 @@
 
 {% block choice_widget_expanded %}
 
-    <div {{ block('widget_container_attributes') }}>
-    {% for child in form %}
-        {{ form_widget(child) }}
-        {{ form_label(child) }}
-    {% endfor %}
-    </div>
+	<div {{ block('widget_container_attributes') }}> 
+		{% if multiple %}
+			{% for child in form %}
+				<div class="checkbox">
+					<label>
+						{{ form_widget(child) }}
+						{{ (child.vars.label ? child.vars.label : child.vars.name|humanize) }}
+					</label>
+				</div>
+			{% endfor %}
+		{% else %}
+			{% for child in form %}
+				{{ form_widget(child) }}
+				{{ form_label(child) }}
+			{% endfor %}
+		{% endif %}
+	</div>
 
 {% endblock choice_widget_expanded %}
 
@@ -288,10 +306,10 @@
 
 {% block form_row %}
 
-    <div class="form-group">
+    <div class="form-group{{ errors|length > 0 ? ' has-error' }}">
         {{ form_label(form) }}
-        {{ form_errors(form) }}
         {{ form_widget(form) }}
+        {{ form_errors(form) }}
     </div>
 
 {% endblock form_row %}
@@ -327,6 +345,7 @@
 		{{ attrname }}="{{ attrvalue }}"
 	{% endfor %}
 	{% if multipart %} enctype="multipart/form-data"{% endif %}
+        novalidate
 		
 {% endspaceless %}
 {% endblock %}
@@ -364,11 +383,9 @@
 {% block form_errors %}
 
     {% if errors|length > 0 %}
-    <ul>
         {% for error in errors %}
-            <li>{{ error.message }}</li>
+            <div class="help-block">{{ error.message }}</div>
         {% endfor %}
-    </ul>
     {% endif %}
 
 {% endblock form_errors %}
@@ -403,18 +420,15 @@
 		'choice' in form.vars.block_prefixes
 		? 'form-control' : ''
 	) %}
-	
-	{% set placeholder = (attr.placeholder is defined ? attr.placeholder : ( label is null ? name|humanize : label ) ) %}
     
     id="{{ id }}" name="{{ full_name }}"
     class="{{ (attr.class|default('') ~ form_control_class)|trim }}"
-	placeholder="{{ placeholder }}"
     {%- if read_only %} readonly="readonly"{% endif -%}
     {%- if disabled %} disabled="disabled"{% endif -%}
     {%- if required %} required="required"{% endif -%}
     {%- if max_length %} maxlength="{{ max_length }}"{% endif -%}
     {%- if pattern %} pattern="{{ pattern }}"{% endif -%}
-    {%- for attrname, attrvalue in attr if attrname not in ['class', 'placeholder'] -%}
+    {%- for attrname, attrvalue in attr if attrname not in ['class'] -%}
         {{- " " -}}
         {%- if attrname in ['placeholder', 'title'] -%}
             {{- attrname }}="{{ attrvalue|trans({}, translation_domain) }}"

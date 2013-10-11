@@ -16,16 +16,11 @@ class QuestionType extends AbstractType{
 			'label' => 'Question'
 		));
 		
-		$builder->add('tags', 'collection', array(
-			'type' => 'entity',
-			'prototype' => true,
-			'allow_add' => true,
-			'allow_delete' => true,
-			'options' => array(
-				'property' => 'title',
-				'class' => 'Accord\DevStackBundle\Entity\Tag',
-				'label' => false
-			)
+		$builder->add('tags', 'entity', array(
+			'expanded' => true,
+			'multiple' => true,
+			'class' => 'Accord\DevStackBundle\Entity\Tag',
+			'label' => 'Tags'
 		));
 		
 		$builder->add('submit', 'submit', array(

@@ -10,9 +10,11 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Accord\DevStackBundle\Form\Type\SolutionCommentType;
 use Accord\DevStackBundle\Form\Type\SolutionType;
 use Accord\DevStackBundle\Form\Type\QuestionType;
+use Accord\DevStackBundle\Form\Type\SearchType;
 
 use Accord\DevStackBundle\Entity\SolutionComment;
 use Accord\DevStackBundle\Entity\Solution;
+use Accord\DevStackBundle\Entity\Question;
 
 class DefaultController extends Controller{
 	
@@ -41,19 +43,108 @@ class DefaultController extends Controller{
 		$question = $repo->findOneBy(array('slug' => $slug));
 		if(!$question) throw $this->createNotFoundException('The specified question could not be found');
 		
-		$commentForm = $this->createForm(new SolutionCommentType());
 		$solutionForm = $this->createForm(new SolutionType(), null, array(
 			'action' => $this->generateUrl('ds_solution_post', array(
 				'slug' => $slug
 			))
 		));
 		
+		$commentForms = array();
+		foreach($question->getSolutions() as $solution){
+			$commentForms[$solution->getId()] = $this
+				->createForm(new SolutionCommentType(), null, array(
+					'action' => $this->generateUrl('ds_solution_comment', array(
+						'id' => $solution->getId()
+					))
+				))
+				->createView()
+			;
+		}
+		
 		return $this->render('AccordDevStackBundle:Question:index.html.twig', array(
 			'question' => $question,
-			'commentForm' => $commentForm->createView(),
+			'commentForms' => $commentForms,
 			'solutionForm' => $solutionForm->createView()
 		));
 			
+	}
+
+	public function questionNewAction(Request $request){
+	
+		$em = $this->getDoctrine()->getManager();
+		$user = $this->get('security.context')->getToken()->getUser();
+		
+		$question = new Question();
+		$question->setUser($user);
+		
+		$form = $this->createForm(new QuestionType(), $question, array(
+			'action' => $this->generateUrl('ds_question_new')
+		));
+		
+		if($request->isMethod('POST')){
+			$form->handleRequest($request);
+			if($form->isValid()){
+				$em->persist($question);
+				$em->flush();
+				
+				$this->get('session')->getFlashBag()->add('notice', 'Your question has been posted');
+				
+				$url = $this->generateUrl('ds_question', array(
+					'slug' => $question->getSlug()
+				));
+				
+				return $this->redirect($url);
+			}
+		}
+		
+		return $this->render('AccordDevStackBundle:Question:new.html.twig', array(
+			'question' => $question,
+			'form' => $form->createView()
+		));
+	
+	}
+	
+	public function questionDeleteAction($slug, $confirm){
+		
+		$em = $this->getDoctrine()->getManager();
+		$question = $em->getRepository('AccordDevStackBundle:Question')->findOneBy(array(
+			'slug' => $slug
+		));
+		
+		if(!$question) throw $this->createNotFoundException ('The specified question could not be found');
+		
+		$user = $this->get('security.context')->getToken()->getUser();
+		if($user->getId() !== $question->getUser()->getId()){
+			throw new AccessDeniedException('You do not have permission to delete this question');
+		}
+		
+		$questionUrl = $this->generateUrl('ds_question', array('slug' => $slug));
+		$confirmUrl = $this->generateUrl('ds_question_delete', array(
+			'slug' => $slug,
+			'confirm' => 'confirm'
+		));
+		
+		$flashBag = $this->get('session')->getFlashBag();
+		
+		if($confirm){
+			$em->remove($question);
+			$em->flush();
+			$flashBag->add('notice', 'Question deleted');
+			
+			$homeUrl = $this->generateUrl('ds_homepage');
+			return $this->redirect($homeUrl);
+		}
+		else{
+			
+			return $this->forward('AccordDevStackBundle:Default:confirm', array(
+				'title' => 'Delete Question',
+				'message' => 'Are you sure you want to delete this question?',
+				'confirmUrl' => $confirmUrl,
+				'cancelUrl' => $questionUrl
+			));
+			
+		}
+		
 	}
 	
 	public function questionEditAction(Request $request, $slug){
@@ -65,12 +156,42 @@ class DefaultController extends Controller{
 		
 		if(!$question) throw $this->createNotFoundException ('The specified question could not be found');
 		
+		$user = $this->get('security.context')->getToken()->getUser();
+		if($user->getId() !== $question->getUser()->getId()){
+			throw new AccessDeniedException('You do not have permission to edit this question');
+		}
+		
 		$form = $this->createForm(new QuestionType(), $question, array(
 			'action' => $this->generateUrl('ds_question_edit', array(
 				'slug' => $slug
 			))
 		));
+                
+                $form->add('cancel', 'submit');
 		
+		if($request->isMethod('POST')){
+			
+			$form->handleRequest($request);
+			
+			$url = $this->generateUrl('ds_question', array(
+				'slug' => $slug
+			));
+			
+			if($form->get('cancel')->isClicked()){
+				return $this->redirect($url);
+			}
+			
+			if($form->isValid()){
+				$em->persist($question);
+				$em->flush();
+				
+				$this->get('session')->getFlashBag()->add('notice', 'Your question has been updated');
+				
+				return $this->redirect($url);
+			}
+			
+		}
+                		
 		return $this->render('AccordDevStackBundle:Question:edit.html.twig', array(
 			'question' => $question,
 			'form' => $form->createView()
@@ -364,6 +485,38 @@ class DefaultController extends Controller{
 			'message' => $message,
 			'confirmUrl' => $confirmUrl,
 			'cancelUrl' => $cancelUrl
+		));
+		
+	}
+	
+	public function searchAction(Request $request, $tagTitles){
+		
+		$finder = $this->get('devstack.finder_factory')->getQuestionFinder();
+		
+		if($tagTitles){
+			$tags = $this->getDoctrine()->getManager()
+				->getRepository('AccordDevStackBundle:Tag')
+				->findBy(array(
+					'title' => explode(',', $tagTitles)
+				))
+			;
+			foreach($tags as $tag){
+				$finder->addTag($tag);
+			}
+		}
+		
+		$form = $this->createForm(new SearchType(), $finder, array(
+			'action' => $this->generateUrl('ds_search')
+		));
+		
+		if($request->isMethod('POST')){
+			$form->handleRequest($request);
+			return $this->redirect( $finder->getResultUrl() );
+		}
+		
+		return $this->render('AccordDevStackBundle:Search:index.html.twig', array(
+			'finder' => $finder,
+			'form' => $form->createView()
 		));
 		
 	}

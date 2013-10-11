@@ -5,73 +5,77 @@ namespace Accord\DevStackBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
+use Symfony\Component\Validator\Constraints as Assert;
+
 /**
  * Question
  *
  * @ORM\Table()
  * @ORM\Entity
  */
-class Question
-{
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
+class Question{
+	
+	/**
+	 * @var integer
+	 *
+	 * @ORM\Column(name="id", type="integer")
+	 * @ORM\Id
+	 * @ORM\GeneratedValue(strategy="AUTO")
+	 */
+	private $id;
 	
 	/**
 	 *
 	 * @var Accord\DevStackBundle\Entity\User
 	 * @ORM\ManyToOne(targetEntity="User")
-     * @ORM\JoinColumn(name="userId", referencedColumnName="id")
+	 * @ORM\JoinColumn(name="userId", referencedColumnName="id")
 	 */
 	private $user;
 	
 	/**
-     * @ORM\OneToMany(targetEntity="Solution", mappedBy="question")
-     */
+	 * @ORM\OneToMany(targetEntity="Solution", mappedBy="question", cascade={"remove"})
+	 */
 	private $solutions;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="title", type="string", length=255)
-     */
-    private $title;
+	/**
+	 * @var string
+	 *
+	 * @ORM\Column(name="title", type="string", length=255)
+	 * @Assert\NotBlank
+	 */
+	private $title;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="questionMarkdown", type="text")
-     */
-    private $questionMarkdown;
+	/**
+	 * @var string
+	 *
+	 * @ORM\Column(name="questionMarkdown", type="text")
+	 * @Assert\NotBlank
+	 */
+	private $questionMarkdown;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="slug", type="string", length=255, unique=true)
+	/**
+	 * @var string
+	 *
+	 * @ORM\Column(name="slug", type="string", length=255, unique=true)
 	 * @Gedmo\Slug(fields={"title"})
-     */
-    private $slug;
+	 */
+	private $slug;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="created", type="datetime")
+	/**
+	 * @var \DateTime
+	 *
+	 * @ORM\Column(name="created", type="datetime")
 	 * @Gedmo\Timestampable(on="create")
-     */
-    private $created;
+	 */
+	private $created;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="updated", type="datetime")
+	/**
+	 * @var \DateTime
+	 *
+	 * @ORM\Column(name="updated", type="datetime")
 	 * @Gedmo\Timestampable(on="update")
-     */
-    private $updated;
+	 */
+	private $updated;
 	
 	/**
 	 * @ORM\ManyToMany(targetEntity="Tag")
@@ -83,45 +87,44 @@ class Question
 	private $tags;
 	
 	/**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->tags = new \Doctrine\Common\Collections\ArrayCollection();
-    }
+	 * Constructor
+	*/
+	public function __construct()
+	{
+		$this->tags = new \Doctrine\Common\Collections\ArrayCollection();
+	}
 
-    /**
-     * Get id
-     *
-     * @return integer 
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
+	/**
+	 * Get id
+	 *
+	 * @return integer 
+	 */
+	public function getId()
+	{	
+		return $this->id;
+	}
 
-    /**
-     * Set title
-     *
-     * @param string $title
-     * @return Question
-     */
-    public function setTitle($title)
-    {
-        $this->title = $title;
-    
-        return $this;
-    }
+	/**
+	 * Set title
+	 *
+	 * @param string $title
+	 * @return Question
+	 */
+	public function setTitle($title)
+	{
+		$this->title = $title;    
+		return $this;
+	}
 
-    /**
-     * Get title
-     *
-     * @return string 
-     */
-    public function getTitle()
-    {
-        return $this->title;
-    }
+	/**
+	 * Get title
+	 *
+	 * @return string 
+	 */
+	public function getTitle()
+	{
+		return $this->title;
+	}
 
     /**
      * Set questionMarkdown

@@ -5,8 +5,8 @@
 {% block contents %}
 
 	<div class="container">
-		<h2>{{ question.title }}</h2>
 		
+		<h2>{{ question.title }}</h2>
 		<hr />
 		
 		<div class="question row">
@@ -34,7 +34,7 @@
 		
 		{% if question.solutions|length > 0 %}
 			<hr />
-			{% include 'AccordDevStackBundle:Solution:list.html.twig' with {list: question.solutions, commentForm: commentForm} %}
+			{% include 'AccordDevStackBundle:Solution:list.html.twig' with {list: question.solutions, commentForms: commentForms} %}
 		{% endif %}
 		
 		<hr />

@@ -2,3 +2,7 @@ services:
     devstack.ballot_box:
         class: Accord\DevStackBundle\Vote\BallotBox
         arguments: ['@doctrine.orm.entity_manager']
+        
+    devstack.finder_factory:
+        class: Accord\DevStackBundle\Finder\Factory
+        arguments: ['@doctrine.orm.entity_manager', '@router']

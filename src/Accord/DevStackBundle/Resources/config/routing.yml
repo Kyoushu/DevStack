@@ -2,6 +2,11 @@ ds_homepage:
     pattern: /
     defaults:
         _controller: AccordDevStackBundle:Default:index
+        
+ds_question_new:
+    pattern: /question/new
+    defaults:
+        _controller: AccordDevStackBundle:Default:questionNew
     
 ds_question:
     pattern: /question/{slug}
@@ -67,3 +72,9 @@ ds_tag:
     pattern: /tag/{slug}
     defaults:
         _controller: AccordDevStackBundle:Default:tag
+        
+ds_search:
+    pattern: /search/{tagTitles}
+    defaults:
+        _controller: AccordDevStackBundle:Default:search
+        tagTitles: ~
